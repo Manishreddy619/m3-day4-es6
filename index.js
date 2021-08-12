@@ -19,6 +19,7 @@
 //         -->
 
 // 1------gets all products in the list-----------
+let mainBooks = [];
 const getData = () => {
 	fetch('   https://striveschool-api.herokuapp.com/books')
 		.then((res) => {
@@ -26,77 +27,118 @@ const getData = () => {
 			return res.json();
 		})
 		.then((books) => {
-			const row = document.querySelector('.row');
+			mainBooks = books;
+			const row = document.querySelector('#main-wrapper');
 			// console.log(books);
 			books.forEach((book) => {
 				console.log(book);
-				const { img, price, title } = book;
-				displayProducts(img, price, title);
-			});
-		});
-};
+				const { img, price, title, asin, category } = book;
 
-// 2.displaying al the products
-function displayProducts(a, b, c) {
-	const row = document.querySelector('.row');
-	return (row.innerHTML += `
+				return (row.innerHTML += `
                     <div class="col-12 col-sm-6 col-md-4 py-2">
                         <div class="card" >
-                            <img src="${a}" class="card-img-top" alt="...">
+                            <img src="${img}" class="card-img-top" alt="...">
                             <div class="card-body">
-                                <h5 class="card-title">Title of Book: ${c}</h5>
-                                <p class="card-text">price: ${b}</p>
-								<button type="button" class="btn btn-success addCart" onclick = addCard(event)>Add to cart</button>
+                                <h5 class="card-title">Title of Book: ${title}</h5>
+                                <p class="card-text">price: ${category}</p>
+								<button type="button" class="btn btn-success" onclick="addCard(${asin}, event)">${price}</button>
                             </div>
 
                         </div>
                     </div> `);
-}
-const addCard = (e) => {
-	let card = e.target.closest('.card');
-	let button = e.target.closest('.card').children[1].children[2];
-	button.innerHTML = 'Remove from cart';
-	// console.log(card);
-	const row = document.querySelector('.row-add-card');
-	row.appendChild(card);
+			});
+		})
+		.catch((err) => console.log(err));
 };
+const changeBackground = () => {
+	const btn = document.querySelector('.btn-success');
+	return (btn.style.color = 'red');
+};
+let myCart = [];
+let img = [];
+const addCard = (asin, e) => {
+	if (asin !== '') {
+		let card = e.target.closest('.card');
+		card.style.backgroundColor = 'gray';
+		console.log(asin);
+		console.log(mainBooks);
+		mainBooks.forEach((el) => {
+			if (el.asin === String(asin)) {
+				img.push(el.img);
+				return myCart.push(el.title);
+			}
+		});
+	}
+	console.log(img);
+	console.log(myCart);
+	return displayCard(img, myCart);
+};
+displayCard = (arr1, arr2) => {
+	const row = document.querySelector('#cart-wrapper');
+	row.innerHTML = '';
+	console.log(arr1, arr2);
+	arr1.forEach((el) => {
+		// console.log(book);
+		// const { img, price, title, asin, category } = book;
+
+		return (row.innerHTML += `
+                    <div class="col-12 col-sm-6 col-md-4 py-2">
+                        <div class="card" >
+                            <img src="${el}" class="card-img-top" alt="...">
+                        </div>
+                    </div> `);
+	});
+};
+// 2.displaying al the products
+// function displayProducts(a, b, c) {}
+// const addCard = (e) => {
+// 	let card = e.target.closest('.card');
+// 	let button = e.target.closest('.card').children[1].children[2];
+// 	button.innerHTML = 'Remove from cart';
+// 	// console.log(card);
+// 	const row = document.querySelector('.row-add-card');
+// 	row.appendChild(card);
+// };
 
 // let btn = document.querySelector('.btn');
 // console.log(btn);
 // btn.addEventListener('click', function () {
 // 	alert('clicked');
 // });
-function getInput() {
-	let val = document.getElementById('input_id').value;
+// function getInput() {
+// 	let val = document.getElementById('input_id').value;
 
-	console.log(val);
-	fetch('   https://striveschool-api.herokuapp.com/books')
-		.then((res) => {
-			console.log(res);
-			return res.json();
-		})
-		.then((books) => {
-			const row = document.querySelector('.row');
-			// console.log(books);
-			books.forEach((book) => {
-				console.log(book);
-				const { img, price, title } = book;
-				if (val.length >= 2) {
-					if (title.toLowerCase().includes(val.toLowerCase())) {
-						return (row.innerHTML += `
-                    <div class="col-12 col-sm-6 col-md-4 py-2">
-                        <div class="card" >
-                            <img src="${img}" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">Title of Book: ${title}</h5>
-                                <p class="card-text">price: ${price}</p>
-								<button type="button" class="btn btn-success addCart" onclick = addCard(event)>Add to cart</button>
-                            </div>
+// 	console.log(val);
+// 	fetch('   https://striveschool-api.herokuapp.com/books')
+// 		.then((res) => {
+// 			console.log(res);
+// 			return res.json();
+// 		})
+// 		.then((books) => {
+// 			const row = document.querySelector('.row');
+// 			// console.log(books);
+// 			books.forEach((book) => {
+// 				console.log(book);
+// 				const { img, price, title } = book;
+// 				if (val.length >= 2) {
+// 					if (title.toLowerCase().includes(val.toLowerCase())) {
+// 						return (row.innerHTML += `
+//                     <div class="col-12 col-sm-6 col-md-4 py-2">
+//                         <div class="card" >
+//                             <img src="${img}" class="card-img-top" alt="...">
+//                             <div class="card-body">
+//                                 <h5 class="card-title">Title of Book: ${title}</h5>
+//                                 <p class="card-text">price: ${price}</p>
+// 								<button type="button" class="btn btn-success addCart" onclick = addCard(event)>Add to cart</button>
+//                             </div>
 
-                        </div>
-                    </div> `);
-					}
-				}
-			});
-		});
-}
+//                         </div>
+//                     </div> `);
+// 					}
+// 				}
+// 			});
+// 		});
+// }
+window.onload = () => {
+	getData();
+};
