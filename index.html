@@ -15,15 +15,33 @@
 			integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
 			crossorigin="anonymous"
 		/>
-
+		<link rel="stylesheet" href="style.css" />
 		<title>Hello, world!</title>
 	</head>
 	<body>
 		<h1 style="text-align: center; margin-top: 30px">Shop Online Books</h1>
-		<div class="container">
+		<input
+			type="search"
+			id="search"
+			name="search"
+			placeholder="search here"
+			;
+			style="display: flex; width: 800px; margin: auto"
+		/>
+		/>
+		<div>
+			<button style="margin-top: 3rem; margin-left: 2rem">
+				<a href="#my-cart" style="font-size: 30px; margin-left: 30px"
+					>Added items to your cart</a
+				>
+			</button>
+		</div>
+		<div></div>
+		<div class="container" style="margin-top: 5rem">
+			<h3>Available Books</h3>
 			<div class="row" id="main-wrapper"></div>
 		</div>
-		<div class="container">
+		<div class="container" id="my-cart">
 			<h2>Mycart</h2>
 			<div class="row" id="cart-wrapper"></div>
 		</div>

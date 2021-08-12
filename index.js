@@ -40,8 +40,8 @@ const getData = () => {
                             <img src="${img}" class="card-img-top" alt="...">
                             <div class="card-body">
                                 <h5 class="card-title">Title of Book: ${title}</h5>
-                                <p class="card-text">price: ${category}</p>
-								<button type="button" class="btn btn-success" onclick="addCard(${asin}, event)">${price}</button>
+                                <p class="card-text">price: ${price}</p>
+								<button type="button" class="btn btn-success" onclick="addCard(event)">ADD TO CART</button>
                             </div>
 
                         </div>
@@ -56,39 +56,31 @@ const changeBackground = () => {
 };
 let myCart = [];
 let img = [];
-const addCard = (asin, e) => {
-	if (asin !== '') {
+const addCard = (e) => {
+	if (e) {
 		let card = e.target.closest('.card');
-		card.style.backgroundColor = 'gray';
-		console.log(asin);
-		console.log(mainBooks);
-		mainBooks.forEach((el) => {
-			if (el.asin === String(asin)) {
-				img.push(el.img);
-				return myCart.push(el.title);
-			}
-		});
-	}
-	console.log(img);
-	console.log(myCart);
-	return displayCard(img, myCart);
-};
-displayCard = (arr1, arr2) => {
-	const row = document.querySelector('#cart-wrapper');
-	row.innerHTML = '';
-	console.log(arr1, arr2);
-	arr1.forEach((el) => {
-		// console.log(book);
-		// const { img, price, title, asin, category } = book;
 
-		return (row.innerHTML += `
-                    <div class="col-12 col-sm-6 col-md-4 py-2">
+		let url = card.children[0].src;
+		let title = card.children[1].children[0].innerHTML;
+		let price = card.children[1].children[1].innerHTML;
+		const row = document.querySelector('#cart-wrapper');
+		return (row.innerHTML += `   <div class="col-12 col-sm-6 col-md-4 py-2">
                         <div class="card" >
-                            <img src="${el}" class="card-img-top" alt="...">
+                            <img src="${url}" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title">Title of Book: ${title}</h5>
+                                <p class="card-text">price: ${price}</p>
+								<button type="button" class="btn btn-success" onclick="removeCard( event)">Remove item</button>
+                            </div>
+
                         </div>
                     </div> `);
-	});
+	}
 };
+const removeCard = (e) => {
+	return e.target.closest('.card').remove();
+};
+
 // 2.displaying al the products
 // function displayProducts(a, b, c) {}
 // const addCard = (e) => {
